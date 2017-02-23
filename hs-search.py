@@ -4,18 +4,16 @@ import json
 import requests
 import pastel
 import collections
-import os
 from algoliasearch import algoliasearch
 from HTMLParser import HTMLParser
 from requests.exceptions import ConnectionError
 import sys
 reload(sys)
-sys.setdefaultencoding('utf-8')
 
 # --- algolia config and init
 algolia_app_id            = ""
 algoia_api_key            = ""
-algolia_index             = "Sticky Help Docs"
+algolia_index             = "docs"
 # --- end algolia init
 
 # --- hubspot init
@@ -47,6 +45,7 @@ def update_index (payload):
     algolia_index.add_objects(payload)
 
 try:
+    sys.setdefaultencoding('utf-8')
     algolia_client = algoliasearch.Client(algolia_app_id, algoia_api_key)
     algolia_index  = algolia_client.init_index(algolia_index)
     api_response   = requests.get(hubspot_blog_api_base_url + hubspot_api_key + hubspot_api_params + hubspot_blog_id)
@@ -59,8 +58,8 @@ try:
             segment["objectID"] = post['id']
             if key[0] in hubspot_post_params:
                     if type(key[1]) is not int:
-                        #segment[key[0]] = str(strip_tags(key[1])).encode('utf-8', 'replace')
                         segment[key[0]] = str(strip_tags(key[1]))
+                        # segment[key[0]] = str(key[1])
                     else:
                         segment[key[0]] = key[1]
         batch.append(segment)
