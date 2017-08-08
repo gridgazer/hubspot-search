@@ -13,7 +13,7 @@ reload(sys)
 
 # --- algolia config and init
 algolia_app_id            = environ['algolia_app_id']
-algoia_api_key            = environ['algolia_app_id']
+algoia_api_key            = environ['algoia_api_key']
 algolia_index             = "docs"
 # --- end algolia init
 
