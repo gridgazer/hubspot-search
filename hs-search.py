@@ -7,18 +7,24 @@ import collections
 from algoliasearch import algoliasearch
 from HTMLParser import HTMLParser
 from requests.exceptions import ConnectionError
+from os import environ
 import sys
 reload(sys)
 
 # --- algolia config and init
-algolia_app_id            = ""
-algoia_api_key            = ""
+algolia_app_id            = environ['algolia_app_id']
+algoia_api_key            = environ['algolia_app_id']
 algolia_index             = "docs"
 # --- end algolia init
 
 # --- hubspot init
-hubspot_api_key           = ""
-hubspot_blog_id           = ""
+hubspot_api_key           = environ['hubspot_api_key']
+# hubspot_blog_id is used as content_group_id from the hubspot api
+#   api ref: https://developers.hubspot.com/docs/methods/blogv2/get_blog_posts
+#
+# the content_group_id can be found in the hubspot dashboard url:
+#   https://app.hubspot.com/blog-beta/:portal_id/blogs/:content_group_id/manage/posts/all
+hubspot_blog_id           = environ['hubspot_blog_id']
 hubspot_api_params        = "&state=PUBLISHED&limit=500&content_group_id=" # If you want/need to pass any additional HubSpot blog post API params
 hubspot_blog_api_base_url = "https://api.hubapi.com/content/api/v2/blog-posts?hapikey="
 hubspot_post_params       = ['url','name','post_summary','post_body','meta_description','created','featured_image']
