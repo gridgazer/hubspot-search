@@ -1,0 +1,5 @@
+export algolia_app_id="algolia-app-id"
+export algoia_api_key="algolia-api-key"
+
+export hubspot_blog_id="hubspot-blog-id"
+export hubspot_api_key="hubspot-api-key"
