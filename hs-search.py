@@ -14,7 +14,7 @@ reload(sys)
 # --- algolia config and init
 algolia_app_id            = environ['algolia_app_id']
 algoia_api_key            = environ['algoia_api_key']
-algolia_index             = "docs"
+algolia_index_name             = "docs"
 # --- end algolia init
 
 # --- hubspot init
@@ -53,15 +53,16 @@ def update_index (payload):
 try:
     sys.setdefaultencoding('utf-8')
     algolia_client = algoliasearch.Client(algolia_app_id, algoia_api_key)
-    algolia_index  = algolia_client.init_index(algolia_index)
+    algolia_index  = algolia_client.init_index(algolia_index_name)
     api_response   = requests.get(hubspot_blog_api_base_url + hubspot_api_key + hubspot_api_params + hubspot_blog_id)
     blog_data      = api_response.json()
     for post in blog_data['objects']:
         print (pastel.colorize('<fg=red>dealing with post titled: ' + post['html_title']))
+        # batch is used to collect updates to be made in algolia index for each blog post
         batch = []
         segment = collections.OrderedDict()
+        segment["objectID"] = post['id']
         for key in post.items():
-            segment["objectID"] = post['id']
             if key[0] in hubspot_post_params:
                     if type(key[1]) is not int:
                         segment[key[0]] = str(strip_tags(key[1]))
