@@ -56,6 +56,12 @@ try:
     algolia_index  = algolia_client.init_index(algolia_index_name)
     api_response   = requests.get(hubspot_blog_api_base_url + hubspot_api_key + hubspot_api_params + hubspot_blog_id)
     blog_data      = api_response.json()
+
+    # First up - clear the index so any deleted blog posts will no longer be present.
+    # Ref: https://www.algolia.com/doc/api-reference/api-methods/clear-index/
+    algolia_index.clear_index()
+
+    # iterate over all posts in the hubspot blog
     for post in blog_data['objects']:
         print (pastel.colorize('<fg=red>dealing with post titled: ' + post['html_title']))
         # batch is used to collect updates to be made in algolia index for each blog post
